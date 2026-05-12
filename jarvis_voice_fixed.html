@@ -1,0 +1,302 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  .jw{min-height:600px;background:#03080f;font-family:'Share Tech Mono',monospace;color:#00d4ff;display:flex;flex-direction:column;align-items:center;padding:24px 16px;position:relative;overflow:hidden}
+  .scanline{position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.015) 2px,rgba(0,212,255,0.015) 4px);pointer-events:none;z-index:0}
+  .gridbg{position:absolute;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+  .content{position:relative;z-index:1;width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:18px}
+  .logo{font-family:'Orbitron',monospace;font-weight:900;font-size:32px;letter-spacing:12px;color:#00d4ff;text-shadow:0 0 20px rgba(0,212,255,0.5)}
+  .tagline{font-size:10px;letter-spacing:4px;color:rgba(0,212,255,0.5);margin-top:4px;text-align:center}
+  .orb-wrap{position:relative;width:160px;height:160px;cursor:pointer}
+  .ring{position:absolute;border-radius:50%;border:1px solid rgba(0,212,255,0.2);animation:spin linear infinite}
+  .r1{width:100%;height:100%;top:0;left:0;border-top-color:rgba(0,212,255,0.6);animation-duration:4s}
+  .r2{width:80%;height:80%;top:10%;left:10%;border-right-color:rgba(0,180,255,0.4);animation-duration:6s;animation-direction:reverse}
+  .r3{width:60%;height:60%;top:20%;left:20%;border-bottom-color:rgba(0,212,255,0.3);animation-duration:8s}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .core{position:absolute;width:50%;height:50%;top:25%;left:25%;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.3) 0%,rgba(0,100,180,0.1) 100%);border:1px solid rgba(0,212,255,0.5);display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+  .dot{width:20px;height:20px;border-radius:50%;background:#00d4ff;transition:all 0.3s}
+  .orb-wrap.listening .core{background:radial-gradient(circle,rgba(0,255,150,0.4) 0%,rgba(0,180,100,0.1) 100%);border-color:rgba(0,255,150,0.8)}
+  .orb-wrap.listening .dot{background:#00ff96;animation:pdot 0.6s ease-in-out infinite}
+  .orb-wrap.listening .r1{border-top-color:rgba(0,255,150,0.8);animation-duration:1.5s}
+  .orb-wrap.thinking .core{background:radial-gradient(circle,rgba(255,180,0,0.4) 0%,rgba(200,120,0,0.1) 100%);border-color:rgba(255,180,0,0.8)}
+  .orb-wrap.thinking .dot{background:#ffb400;animation:pdot 0.3s ease-in-out infinite}
+  .orb-wrap.speaking .core{background:radial-gradient(circle,rgba(180,0,255,0.35) 0%,rgba(100,0,200,0.1) 100%);border-color:rgba(180,0,255,0.8)}
+  .orb-wrap.speaking .dot{background:#c060ff;animation:pdot 0.5s ease-in-out infinite}
+  @keyframes pdot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.7}}
+  .waves{display:flex;align-items:center;gap:3px;height:40px;opacity:0;transition:opacity 0.3s}
+  .waves.on{opacity:1}
+  .bar{width:4px;border-radius:2px;background:#00d4ff;animation:wave 1s ease-in-out infinite}
+  .bar:nth-child(1){height:8px;animation-delay:0s}.bar:nth-child(2){height:16px;animation-delay:0.1s}.bar:nth-child(3){height:24px;animation-delay:0.2s}.bar:nth-child(4){height:32px;animation-delay:0.3s}.bar:nth-child(5){height:24px;animation-delay:0.4s}.bar:nth-child(6){height:16px;animation-delay:0.5s}.bar:nth-child(7){height:8px;animation-delay:0.6s}
+  @keyframes wave{0%,100%{transform:scaleY(0.4);opacity:0.4}50%{transform:scaleY(1);opacity:1}}
+  .status{font-size:11px;letter-spacing:3px;color:rgba(0,212,255,0.6);text-align:center;min-height:16px}
+  .micbtn{background:transparent;border:1px solid rgba(0,212,255,0.4);color:#00d4ff;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;padding:10px 24px;cursor:pointer;transition:all 0.3s;border-radius:2px}
+  .micbtn:hover{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.8)}
+  .micbtn.rec{border-color:#00ff96;color:#00ff96;background:rgba(0,255,150,0.05)}
+  .box{width:100%;background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.12);border-radius:2px;padding:12px 16px;font-size:12px;line-height:1.7;letter-spacing:0.5px}
+  .box.resp{border-left:2px solid #00d4ff;color:rgba(255,255,255,0.8)}
+  .lbl{font-size:9px;letter-spacing:4px;color:rgba(0,212,255,0.35);margin-bottom:6px}
+  .txt{color:rgba(0,212,255,0.85)}
+  .grid2{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .chip{background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);padding:8px 12px;font-size:10px;letter-spacing:1px;color:rgba(0,212,255,0.5);cursor:pointer;transition:all 0.2s;border-radius:2px;font-family:'Share Tech Mono',monospace}
+  .chip:hover{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.4);color:#00d4ff}
+  .clbl{color:rgba(0,212,255,0.3);font-size:9px;display:block;margin-bottom:2px}
+  .divider{width:100%;border:none;border-top:1px solid rgba(0,212,255,0.08)}
+  .slbl{font-size:9px;letter-spacing:4px;color:rgba(0,212,255,0.25);align-self:flex-start}
+  .voice-note{font-size:10px;letter-spacing:1px;color:rgba(0,212,255,0.3);text-align:center;padding:6px}
+</style>
+
+<div class="jw">
+  <div class="scanline"></div>
+  <div class="gridbg"></div>
+  <div class="content">
+    <div style="text-align:center">
+      <div class="logo">JARVIS DO ITALO</div>
+      <div class="tagline">ASSISTENTE DE VOZ INTELIGENTE</div>
+    </div>
+
+    <div class="orb-wrap" id="orb" onclick="toggleListen()">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <div class="core"><div class="dot"></div></div>
+    </div>
+
+    <div class="waves" id="waves">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="status" id="status">CLIQUE NO ORB PARA FALAR</div>
+    <button class="micbtn" id="micBtn" onclick="toggleListen()">[ ATIVAR MICROFONE ]</button>
+
+    <div class="box">
+      <div class="lbl">VOCÊ DISSE</div>
+      <div class="txt" id="transcript">—</div>
+    </div>
+
+    <div class="box resp">
+      <div class="lbl">JARVIS RESPONDE</div>
+      <div id="response">Aguardando seu comando...</div>
+    </div>
+
+    <div class="voice-note" id="voiceNote"></div>
+
+    <hr class="divider">
+    <div class="slbl">COMANDOS RÁPIDOS</div>
+    <div class="grid2">
+      <div class="chip" onclick="runQuick('Que horas são agora e como está o clima típico no Brasil?')"><span class="clbl">TEMPO</span>Que horas são?</div>
+      <div class="chip" onclick="runQuick('Me dê uma curiosidade científica incrível de hoje')"><span class="clbl">INFO</span>Curiosidade do dia</div>
+      <div class="chip" onclick="runQuick('Me dê uma frase motivacional poderosa para hoje')"><span class="clbl">MOOD</span>Motivação do dia</div>
+      <div class="chip" onclick="runQuick('Quanto é 1287 dividido por 33?')"><span class="clbl">CALC</span>Calcular algo</div>
+      <div class="chip" onclick="runQuick('Me ajude a escrever um email profissional de agradecimento')"><span class="clbl">EMAIL</span>Redigir email</div>
+      <div class="chip" onclick="runQuick('Quais são as 3 tendências de tecnologia mais importantes de 2025?')"><span class="clbl">TECH</span>Tendências tech</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const orb = document.getElementById('orb');
+const waves = document.getElementById('waves');
+const statusEl = document.getElementById('status');
+const micBtn = document.getElementById('micBtn');
+const transcriptEl = document.getElementById('transcript');
+const responseEl = document.getElementById('response');
+const voiceNote = document.getElementById('voiceNote');
+
+let recognition = null;
+let isListening = false;
+let isThinking = false;
+let isSpeaking = false;
+let history = [];
+let synth = window.speechSynthesis;
+let voicesLoaded = false;
+
+// Load voices
+function loadVoices() {
+  return new Promise(resolve => {
+    let v = synth.getVoices();
+    if (v.length) { voicesLoaded = true; resolve(v); return; }
+    synth.onvoiceschanged = () => { voicesLoaded = true; resolve(synth.getVoices()); };
+    setTimeout(() => resolve(synth.getVoices()), 1000);
+  });
+}
+loadVoices();
+
+function getBestVoice() {
+  const voices = synth.getVoices();
+  // Priority: pt-BR male > pt-BR any > pt any > en-US
+  const ptBR = voices.filter(v => v.lang === 'pt-BR');
+  const ptAny = voices.filter(v => v.lang.startsWith('pt'));
+  const enUS = voices.filter(v => v.lang === 'en-US');
+  return ptBR.find(v => /male|masculin/i.test(v.name))
+    || ptBR[0] || ptAny[0] || enUS[0] || voices[0];
+}
+
+function speak(text) {
+  if (!synth) return;
+  synth.cancel();
+  // Strip markdown
+  const clean = text.replace(/\*\*/g,'').replace(/\*/g,'').replace(/#{1,6}\s/g,'').replace(/`/g,'').slice(0, 400);
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'pt-BR';
+  utt.rate = 0.92;
+  utt.pitch = 0.8;
+  utt.volume = 1;
+  const voice = getBestVoice();
+  if (voice) { utt.voice = voice; voiceNote.textContent = 'VOZ: ' + voice.name; }
+  else { voiceNote.textContent = 'VOZ: PADRÃO DO NAVEGADOR'; }
+  utt.onstart = () => {
+    isSpeaking = true;
+    orb.className = 'orb-wrap speaking';
+    waves.classList.add('on');
+    statusEl.textContent = 'JARVIS FALANDO...';
+  };
+  utt.onend = utt.onerror = () => {
+    isSpeaking = false;
+    orb.className = 'orb-wrap';
+    waves.classList.remove('on');
+    statusEl.textContent = 'CLIQUE NO ORB PARA FALAR';
+  };
+  synth.speak(utt);
+}
+
+// Inline AI responses (no API call needed - uses sendPrompt pattern via built-in responses)
+const SYSTEM = `Você é JARVIS, um assistente de voz pessoal sofisticado e inteligente. Responda SEMPRE em português brasileiro. Seja conciso (máximo 3-4 frases curtas), direto e útil — suas respostas serão lidas em voz alta. Evite listas longas, markdown, emojis. Tom: confiante, ligeiramente formal, como um assistente de alta tecnologia. Nunca diga que é IA ou modelo — você é JARVIS.`;
+
+async function askJarvis(text) {
+  history.push({ role: 'user', content: text });
+  
+  // Keep history short
+  if (history.length > 10) history = history.slice(-10);
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: SYSTEM,
+      messages: history
+    })
+  });
+
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  const reply = (data.content || []).map(b => b.text || '').join('').trim();
+  history.push({ role: 'assistant', content: reply });
+  return reply;
+}
+
+// Fallback local responses when API unavailable
+function localReply(text) {
+  const t = text.toLowerCase();
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes().toString().padStart(2,'0');
+  if (/hora|que hora/i.test(t)) return `São ${h}:${m}. Como posso ajudá-lo?`;
+  if (/calc|quanto|dividid|vezes|mais|menos/i.test(t)) {
+    try {
+      const expr = text.match(/[\d\s\+\-\*\/\(\)\.]+/)?.[0];
+      if (expr) { const r = Function('"use strict";return (' + expr + ')')(); return `O resultado é ${r}.`; }
+    } catch(e) {}
+    return 'Para cálculos complexos, preciso de conexão com o servidor.';
+  }
+  if (/motiv/i.test(t)) return 'A excelência não é um destino, é uma jornada contínua. Cada passo à frente conta.';
+  if (/curiosidad/i.test(t)) return 'O cérebro humano processa imagens em apenas 13 milissegundos — mais rápido que um piscar de olhos.';
+  return 'Entendido. No momento estou em modo offline, mas estou aqui para ajudar no que puder.';
+}
+
+async function processCommand(text) {
+  if (!text.trim()) return;
+  isThinking = true;
+  orb.className = 'orb-wrap thinking';
+  waves.classList.add('on');
+  statusEl.textContent = 'PROCESSANDO...';
+  micBtn.textContent = '[ PROCESSANDO... ]';
+  micBtn.disabled = true;
+  responseEl.textContent = '...';
+
+  let reply;
+  try {
+    reply = await askJarvis(text);
+  } catch(e) {
+    console.warn('API unavailable, using local:', e);
+    reply = localReply(text);
+  }
+
+  responseEl.textContent = reply;
+  isThinking = false;
+  micBtn.disabled = false;
+  micBtn.textContent = '[ ATIVAR MICROFONE ]';
+  speak(reply);
+}
+
+function setupRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    statusEl.textContent = 'USE CHROME OU EDGE PARA VOZ';
+    return null;
+  }
+  const r = new SR();
+  r.lang = 'pt-BR';
+  r.interimResults = true;
+  r.maxAlternatives = 1;
+  r.continuous = false;
+
+  r.onstart = () => {
+    isListening = true;
+    orb.className = 'orb-wrap listening';
+    waves.classList.add('on');
+    statusEl.textContent = 'OUVINDO...';
+    micBtn.textContent = '[ PARAR ]';
+    micBtn.classList.add('rec');
+  };
+
+  r.onresult = (e) => {
+    let interim = '', final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) final += t; else interim += t;
+    }
+    transcriptEl.textContent = final || interim || '—';
+    if (final) { recognition.stop(); processCommand(final.trim()); }
+  };
+
+  r.onerror = (e) => {
+    stopListening();
+    if (e.error === 'not-allowed') statusEl.textContent = 'PERMISSÃO DE MICROFONE NEGADA';
+    else if (e.error === 'no-speech') { statusEl.textContent = 'SEM ÁUDIO — TENTE NOVAMENTE'; setTimeout(resetStatus, 2000); }
+    else { statusEl.textContent = 'ERRO: ' + e.error; setTimeout(resetStatus, 2000); }
+  };
+
+  r.onend = () => { if (isListening) stopListening(); };
+  return r;
+}
+
+function resetStatus() { statusEl.textContent = 'CLIQUE NO ORB PARA FALAR'; }
+
+function stopListening() {
+  isListening = false;
+  if (!isThinking && !isSpeaking) {
+    orb.className = 'orb-wrap';
+    waves.classList.remove('on');
+  }
+  statusEl.textContent = isThinking ? 'PROCESSANDO...' : 'CLIQUE NO ORB PARA FALAR';
+  micBtn.textContent = '[ ATIVAR MICROFONE ]';
+  micBtn.classList.remove('rec');
+}
+
+function toggleListen() {
+  if (isThinking || isSpeaking) { synth.cancel(); isSpeaking = false; orb.className='orb-wrap'; return; }
+  if (isListening) { recognition && recognition.stop(); stopListening(); return; }
+  if (!recognition) recognition = setupRecognition();
+  if (!recognition) return;
+  try { recognition.start(); } catch(e) { console.error(e); }
+}
+
+function runQuick(cmd) {
+  transcriptEl.textContent = cmd;
+  processCommand(cmd);
+}
+</script>
